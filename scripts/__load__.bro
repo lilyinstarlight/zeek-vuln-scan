@@ -1,0 +1,1 @@
+@load ./vuln.bro
