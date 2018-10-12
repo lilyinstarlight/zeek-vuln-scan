@@ -71,14 +71,6 @@ export {
    ## has to have failed connections with if it has passed dark_host_threshold
    const local_scan_threshold_with_darknet_hits = 100 &redef;
 
-   ## The threshold of the number of unique hosts a remote scanning host has
-   ## to have failed connections with
-   const knockknock_threshold                   = 20 &redef;
-
-   ## The threshold of the number of unique hosts a remote scanning host has
-   ## to have failed connections with if it has passed dark_host_threshold
-   const knockknock_threshold_with_darknet_hits = 3  &redef;
-
    ## Override this hook to ignore particular scan connections
    global Scan::scan_policy: hook(scanner: addr, victim: addr, scanned_port: port);
 
