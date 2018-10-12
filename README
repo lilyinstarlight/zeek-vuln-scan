@@ -1,5 +1,5 @@
-Scan::Vuln
-==========
+Bro Vulnerability Scan Detector
+===============================
 
 A vulnerability scan detection script for Bro. This script simply detects the difference between a basic scan and a vulnerability scan by whether a reasonable amount of data was transferred on a few ports or many hosts in a short period of time.
 
