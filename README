@@ -1,2 +1,12 @@
 Scan::Vuln
 ==========
+
+A vulnerability scan detector. This script simply detects the difference between a basic scan and a vulnerability scan by whether a reasonable amount of data was transferred on a few ports or many hosts in a short period of time.
+
+
+Usage
+-----
+
+```sh
+$ bro-pkg install https://github.com/fkmclane/bro-vuln-scan.git
+```
