@@ -1,6 +1,8 @@
 Zeek (Bro) Vulnerability Scan Detector
 ======================================
 
+![Build Status](https://img.shields.io/travis/fkmclane/bro-vuln-scan.svg)
+
 A vulnerability scan detection script for Zeek (Bro). This script simply detects the difference between a basic scan and a vulnerability scan by whether a reasonable amount of data was transferred on a few ports or many hosts in a short period of time.
 
 Many thanks to ncsa/bro-simple-scan on which this script is based.
