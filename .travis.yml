@@ -4,7 +4,13 @@ addons:
   apt:
     packages:
       - cmake
+      - flex
+      - bison
       - libpcap-dev
+      - libssl-dev
+      - zlib1g-dev
+      - libkrb5-dev
+      - sqlite3
       - swig
 
 install:
