@@ -7,19 +7,11 @@ addons:
       - libpcap-dev
       - swig
 
-stages:
-  - setup
-  - test
+install:
+  - git clone --recursive https://github.com/bro/bro.git "$HOME"/bro-src
+  - pushd "$HOME"/bro-src && ./configure --prefix="$HOME"/bro && make && make install && popd
+  - pip install --user bro-pkg
+  - PATH="$HOME/.local/bin:$HOME/bro/bin:$PATH" bro-pkg autoconfig
 
-jobs:
-  include:
-    - stage: setup
-      script:
-        - git clone --recursive https://github.com/bro/bro.git "$HOME"/bro-src
-        - pushd "$HOME"/bro-src && ./configure --prefix="$HOME"/bro && make && make install && popd
-        - pip install --user bro-pkg
-        - PATH="$HOME/.local/bin:$HOME/bro/bin:$PATH" bro-pkg autoconfig
-
-    - stage: test
-      script:
-        - PATH="$HOME/.local/bin:$HOME/bro/bin:$PATH" bro-pkg test .
+script:
+  - PATH="$HOME/.local/bin:$HOME/bro/bin:$PATH" bro-pkg test .
