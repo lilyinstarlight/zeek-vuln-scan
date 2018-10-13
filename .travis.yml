@@ -27,11 +27,11 @@ jobs:
   include:
     - stage: setup
       script:
-        - git clone --recursive https://github.com/bro/bro.git ../bro-src
-        - pushd ../bro-src && ./configure --prefix=../bro && make && make install && popd
-        - pip install bro-pkg
-        - PATH="../bro/bin:$PATH" bro-pkg autoconfig
+        - git clone --recursive https://github.com/bro/bro.git "$HOME"/bro-src
+        - pushd "$HOME"/bro-src && ./configure --prefix="$HOME"/bro && make && make install && popd
+        - pip --user install bro-pkg
+        - PATH="$HOME/.local/bin:$HOME/bro/bin:$PATH" bro-pkg autoconfig
 
     - stage: test
       script:
-        - bro-pkg test .
+        - PATH="$HOME/.local/bin:$HOME/bro/bin:$PATH"bro-pkg test .
