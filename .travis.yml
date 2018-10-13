@@ -22,4 +22,4 @@ jobs:
 
     - stage: test
       script:
-        - PATH="$HOME/.local/bin:$HOME/bro/bin:$PATH"bro-pkg test .
+        - PATH="$HOME/.local/bin:$HOME/bro/bin:$PATH" bro-pkg test .
