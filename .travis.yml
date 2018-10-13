@@ -1,0 +1,20 @@
+language: cpp
+
+stages:
+  - setup
+  - test
+
+jobs:
+  include:
+    - stage: setup
+      script:
+        - apt-get update
+        - apt-get -y install cmake make gcc g++ flex bison python libpcap-dev libssl-dev zlib1g-dev libkrb5-dev git sqlite3 curl bsdmainutils
+        - git clone --recursive https://github.com/bro/bro.git /usr/src/bro
+        - pushd /usr/src/bro && ./configure && make && make install && popd
+        - pip install bro-pkg
+        - PATH="/usr/local/bro/bin:$PATH" bro-pkg autoconfig
+
+    - stage: test
+      script:
+        - bro-pkg test .
