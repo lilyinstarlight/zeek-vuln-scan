@@ -4,20 +4,7 @@ addons:
   apt:
     packages:
       - cmake
-      - make
-      - gcc
-      - g++
-      - flex
-      - bison
-      - python
       - libpcap-dev
-      - libssl-dev
-      - zlib1g-dev
-      - libkrb5-dev
-      - git
-      - sqlite3
-      - curl
-      - bsdmainutils
 
 stages:
   - setup
@@ -29,7 +16,7 @@ jobs:
       script:
         - git clone --recursive https://github.com/bro/bro.git "$HOME"/bro-src
         - pushd "$HOME"/bro-src && ./configure --prefix="$HOME"/bro && make && make install && popd
-        - pip --user install bro-pkg
+        - pip install --user bro-pkg
         - PATH="$HOME/.local/bin:$HOME/bro/bin:$PATH" bro-pkg autoconfig
 
     - stage: test
