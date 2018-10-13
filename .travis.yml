@@ -5,6 +5,7 @@ addons:
     packages:
       - cmake
       - libpcap-dev
+      - swig
 
 stages:
   - setup
