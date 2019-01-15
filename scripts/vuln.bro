@@ -209,8 +209,8 @@ function add_scan_attempt(scanner: addr, attempt: Attempt, attack_rx: count, att
 }
 
 @if (Cluster::is_enabled())
-@ifdef (Cluster::worker2manager_events)
-   redef Cluster::worker2manager_events += /Vuln::scan_attempt/;
+   @ifdef (Cluster::worker2manager_events)
+      redef Cluster::worker2manager_events += /Vuln::scan_attempt/;
    @endif
 
    function add_scan(id: conn_id, attack_rx: count, attack_tx: count) {
