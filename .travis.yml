@@ -1,5 +1,7 @@
 language: cpp
 
+dist: bionic
+
 addons:
   apt:
     packages:
@@ -16,8 +18,11 @@ addons:
 install:
   - git clone --recursive https://github.com/zeek/zeek.git "$HOME"/zeek-src
   - pushd "$HOME"/zeek-src && ./configure --prefix="$HOME"/zeek && make && make install && popd
-  - pip install --user bro-pkg
-  - PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" bro-pkg autoconfig
+  - pip install --user zkg
+  - PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" zkg autoconfig
 
 script:
-  - PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" bro-pkg test .
+  - PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" zkg test .
+
+after_failure:
+  - cat /home/travis/.zkg/logs/*-build.log
