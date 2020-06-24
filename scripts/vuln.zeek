@@ -19,11 +19,11 @@ export {
       ## scanning a single victim host on several ports and
       ## sending/receiving some data.  This notice is generated
       ## when an attacking host attempts to connect to
-      ## :bro:id:`Vuln::scan_threshold`
+      ## :zeek:id:`Vuln::scan_threshold`
       ## unique ports on a single host over the previous
-      ## :bro:id:`Vuln::scan_interval`
+      ## :zeek:id:`Vuln::scan_interval`
       ## time range with data transfer over
-      ## :bro:id:`Vuln::vuln_threshold`.
+      ## :zeek:id:`Vuln::vuln_threshold`.
       Scan::Vuln_Scan,
    };
 
@@ -260,12 +260,12 @@ function add_scan(id: conn_id, attack_rx: count, attack_tx: count) {
 @endif
 
 event connection_attempt(c: connection) {
-   if (c$history == "S")
+   if (c$history == "S" || c$history == "SW")
       add_scan(c$id, 0, 0);
 }
 
 event connection_rejected(c: connection) {
-   if (c$history == "Sr")
+   if (c$history == "Sr" || c$history == "SWr")
       add_scan(c$id, 0, 0);
 }
 

@@ -2,7 +2,6 @@
 description = Vulnerability scanning TCP detection
 test_command = (cd tests && btest -d)
 script_dir = scripts
-tags = bro plugin, scan detection
+tags = zeek plugin, scan detection
 depends =
-  bro >=2.5.1
-  bro/ncsa/bro-is-darknet >=0.3
+  ncsa/bro-is-darknet >=0.6
