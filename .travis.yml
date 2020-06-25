@@ -25,4 +25,4 @@ script:
   - PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" zkg test .
 
 after_failure:
-  - cat /home/travis/.zkg/logs/*-build.log
+  - cat "$HOME"/.zkg/logs/*-build.log
