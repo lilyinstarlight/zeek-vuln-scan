@@ -204,7 +204,7 @@ function add_scan_attempt(scanner: addr, attempt: Attempt, attack_rx: count, att
          @ifdef (Cluster::worker2manager_events)
             event Vuln::scan_attempt(scanner, attempt, attack_rx, attack_tx);
          @else
-            Cluster::publish_hrw(Vuln::scan_attempt, scanner, attempt);
+            Cluster::publish_hrw(Cluster::proxy_pool, scanner, Vuln::scan_attempt, scanner, attempt, attack_rx, attack_tx);
          @endif
 
          local thresh = Site::is_local_addr(scanner) ? local_scan_threshold : scan_threshold;
