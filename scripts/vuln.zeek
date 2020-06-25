@@ -9,8 +9,6 @@
 
 @load base/utils/time
 
-@load packages/bro-is-darknet
-
 module Vuln;
 
 export {
@@ -40,17 +38,12 @@ export {
       port_counts: table[port] of count;
       data_rx: count;
       data_tx: count;
-      dark_hosts: set[addr];
    };
 
    ## Failed connection attempts are tracked until not seen for this interval.
    ## A higher interval will detect slower scanners, but may also yield more
    ## false positives.
    const scan_timeout = 5min &redef;
-
-   ## The threshold of the number of darknet hosts a scanning host has to have
-   ## scanned in order for the scan to be considered a darknet scan
-   const dark_host_threshold = 3 &redef;
 
    ## The threshold of the unique number of host+ports a remote scanning host
    ## has to have failed connections with
@@ -62,14 +55,6 @@ export {
    ## The threshold of the unique number of host+ports a local scanning host
    ## has to have failed connections with
    const local_scan_threshold = 250 &redef;
-
-   ## The threshold of the unique number of host+ports a remote scanning host
-   ## has to have failed connections with if it has passed dark_host_threshold
-   const scan_threshold_with_darknet_hits = 10 &redef;
-
-   ## The threshold of the unique number of host+ports a local scanning host
-   ## has to have failed connections with if it has passed dark_host_threshold
-   const local_scan_threshold_with_darknet_hits = 100 &redef;
 
    ## Override this hook to ignore particular scan connections
    global Scan::scan_policy: hook(scanner: addr, victim: addr, scanned_port: port);
@@ -152,21 +137,18 @@ function add_scan_attempt(scanner: addr, attempt: Attempt, attack_rx: count, att
 
    local si: Scan_Info;
    local attempts: set[Attempt];
-   local dark_hosts: set[addr];
    local port_counts: table[port] of count;
 
    if (scanner !in attacks) {
       attempts = set();
       port_counts = table();
-      dark_hosts = set();
-      si = Scan_Info($first_seen=network_time(), $attempts=attempts, $port_counts=port_counts, $dark_hosts=dark_hosts, $data_rx=0, $data_tx=0);
+      si = Scan_Info($first_seen=network_time(), $attempts=attempts, $port_counts=port_counts, $data_rx=0, $data_tx=0);
       attacks[scanner] = si;
    }
    else {
       si = attacks[scanner];
       attempts = si$attempts;
       port_counts = si$port_counts;
-      dark_hosts = si$dark_hosts;
    }
 
    if (attempt !in attempts) {
@@ -175,10 +157,6 @@ function add_scan_attempt(scanner: addr, attempt: Attempt, attack_rx: count, att
          port_counts[attempt$scanned_port] = 1;
       else
          ++port_counts[attempt$scanned_port];
-
-      if (|dark_hosts| < dark_host_threshold && attempt$victim !in dark_hosts && Site::is_darknet(attempt$victim)) {
-         add dark_hosts[attempt$victim];
-      }
    }
 
    si$data_rx += attack_rx;
@@ -189,12 +167,7 @@ function add_scan_attempt(scanner: addr, attempt: Attempt, attack_rx: count, att
    local thresh: count;
    local is_local = Site::is_local_addr(scanner);
 
-   local is_darknet_scan = |dark_hosts| >= dark_host_threshold;
-
-   if (is_darknet_scan)
-      thresh = is_local ? local_scan_threshold_with_darknet_hits : scan_threshold_with_darknet_hits;
-   else
-      thresh = is_local ? local_scan_threshold : scan_threshold;
+   thresh = is_local ? local_scan_threshold : scan_threshold;
 
    local is_scan = |attempts| >= thresh;
 
@@ -231,7 +204,7 @@ function add_scan_attempt(scanner: addr, attempt: Attempt, attack_rx: count, att
          @ifdef (Cluster::worker2manager_events)
             event Vuln::scan_attempt(scanner, attempt, attack_rx, attack_tx);
          @else
-            Cluster::publish_hrw(Cluster::proxy_pool, scanner, Vuln::scan_attempt, scanner, attempt);
+            Cluster::publish_hrw(Vuln::scan_attempt, scanner, attempt);
          @endif
 
          local thresh = Site::is_local_addr(scanner) ? local_scan_threshold : scan_threshold;
