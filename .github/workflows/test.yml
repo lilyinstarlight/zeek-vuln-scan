@@ -16,14 +16,14 @@ jobs:
         run: |
           git clone --recursive https://github.com/zeek/zeek.git "$HOME"/zeek-src
           pushd "$HOME"/zeek-src && ./configure --prefix="$HOME"/zeek && make && make install && popd
-          pip3 install --user zkg
-          PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" zkg autoconfig
+          pip3 install --user gitpython semantic-version
+          PATH="$HOME/zeek/bin:$PATH" zkg autoconfig
 
       - uses: actions/checkout@v2
 
       - name: Run tests
         run: |
-          PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" zkg test .
+          PATH="$HOME/zeek/bin:$PATH" zkg test .
 
           echo '::group::Build logs'
 
