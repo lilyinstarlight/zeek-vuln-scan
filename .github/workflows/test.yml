@@ -17,7 +17,7 @@ jobs:
           git clone --recursive https://github.com/zeek/zeek.git "$HOME"/zeek-src
           pushd "$HOME"/zeek-src && ./configure --prefix="$HOME"/zeek && make && make install && popd
           pip3 install --user gitpython semantic-version
-          PATH="$HOME/zeek/bin:$PATH" zkg autoconfig
+          yes | PATH="$HOME/zeek/bin:$PATH" zkg autoconfig
 
       - uses: actions/checkout@v2
 
