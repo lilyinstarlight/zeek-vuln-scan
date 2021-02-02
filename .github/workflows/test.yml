@@ -10,13 +10,13 @@ jobs:
     steps:
       - name: Install dependencies
         run: |
-          sudo apt-get install -y libpcap-dev libssl-dev zlib1g-dev
+          sudo apt-get install -y libpcap-dev
 
       - name: Install Zeek
         run: |
           git clone --recursive https://github.com/zeek/zeek.git "$HOME"/zeek-src
           pushd "$HOME"/zeek-src && ./configure --prefix="$HOME"/zeek && make && make install && popd
-          pip install --user zkg
+          pip3 install --user zkg
           PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" zkg autoconfig
 
       - uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
         run: |
           PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" zkg test .
 
-          echo '::group::Build log'
+          echo '::group::Build logs'
 
           for log in "$HOME"/.zkg/logs/*-build.log; do
             echo "$log"
