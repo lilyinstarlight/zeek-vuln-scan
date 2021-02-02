@@ -1,7 +1,7 @@
 Zeek Vulnerability Scan Detector
 ======================================
 
-[![Build Status](https://img.shields.io/travis/com/fkmclane/zeek-vuln-scan.svg)](https://travis-ci.com/fkmclane/zeek-vuln-scan)
+[![Build Status](https://img.shields.io/github/workflow/status/lilyinstarlight/zeek-vuln-scan/Test)](https://github.com/lilyinstarlight/zeek-vuln-scan/actions?query=workflow%3ATest)
 
 A vulnerability scan detection script for Zeek. This script simply detects the difference between a basic scan and a vulnerability scan by whether a reasonable amount of data was transferred on a few ports or many hosts in a short period of time.
 
@@ -12,5 +12,5 @@ Usage
 -----
 
 ```sh
-$ zkg install https://github.com/fkmclane/zeek-vuln-scan.git
+$ zkg install https://github.com/lilyinstarlight/zeek-vuln-scan.git
 ```

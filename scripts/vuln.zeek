@@ -1,6 +1,6 @@
 ##! Vulnerability Scan detection.
 
-# ..Authors: Foster McLane
+# ..Authors: Lily Foster
 #            Justin Azoff
 #            All the authors of the old scan.bro
 
