@@ -1,0 +1,35 @@
+name: Test
+
+on: push
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y libpcap-dev libssl-dev zlib1g-dev
+
+      - name: Install Zeek
+        run: |
+          git clone --recursive https://github.com/zeek/zeek.git "$HOME"/zeek-src
+          pushd "$HOME"/zeek-src && ./configure --prefix="$HOME"/zeek && make && make install && popd
+          pip install --user zkg
+          PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" zkg autoconfig
+
+      - uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          PATH="$HOME/.local/bin:$HOME/zeek/bin:$PATH" zkg test .
+
+          echo '::group::Build log'
+
+          for log in "$HOME"/.zkg/logs/*-build.log; do
+            echo "$log"
+            cat "$log"
+          done
+
+          echo '::endgroup::'
