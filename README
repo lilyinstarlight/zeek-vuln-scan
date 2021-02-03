@@ -1,5 +1,5 @@
 Zeek Vulnerability Scan Detector
-======================================
+================================
 
 [![Build Status](https://img.shields.io/github/workflow/status/lilyinstarlight/zeek-vuln-scan/Test)](https://github.com/lilyinstarlight/zeek-vuln-scan/actions?query=workflow%3ATest)
 
