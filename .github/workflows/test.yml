@@ -23,13 +23,15 @@ jobs:
       - name: Run tests
         run: |
           PATH="$HOME/zeek/bin:$PATH" zkg test . || (
+            shopt -s nullglob
+
             for log in "$HOME"/zeek/var/lib/zkg/logs/*-build.log; do
-              echo "$log" | sed -e "s#^$HOME/zeek/var/lib/zkg/##"
+              echo "${log//$HOME\/zeek\/var\/lib\/zkg\//}"
               cat "$log"
             done
 
             for log in "$HOME"/zeek/var/lib/zkg/testing/**/zkg.test_command.{stderr,stdout}; do
-              echo "$log" | sed -e "s#^$HOME/zeek/var/lib/zkg/##"
+              echo "${log//$HOME\/zeek\/var\/lib\/zkg\//}"
               cat "$log"
             done
 
