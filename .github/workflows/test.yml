@@ -23,7 +23,7 @@ jobs:
       - name: Run tests
         run: |
           PATH="$HOME/zeek/bin:$PATH" zkg test . || (
-            shopt -s nullglob
+            shopt -s globstar nullglob
 
             for log in "$HOME"/zeek/var/lib/zkg/logs/*-build.log; do
               echo "${log//$HOME\/zeek\/var\/lib\/zkg\//}"
